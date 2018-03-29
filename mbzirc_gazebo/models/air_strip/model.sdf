@@ -1,0 +1,620 @@
+<?xml version='1.0' ?>
+<sdf version='1.6'>
+  <model name='air_strip'>
+    <link name='tarmac'>
+      <pose>0 0 -0.5 0 0 0</pose>
+      <inertial>
+        <mass>1e+06</mass>
+        <inertia>
+          <ixx>0.166667</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.166667</iyy>
+          <iyz>0</iyz>
+          <izz>0.166667</izz>
+        </inertia>
+        <pose>0 0 0 0 0 0</pose>
+      </inertial>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>20 90 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/Tarmac</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+      <collision name='collision'>
+        <laser_retro>0</laser_retro>
+        <max_contacts>10</max_contacts>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>20 90 1</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>1</mu>
+              <mu2>1</mu2>
+              <fdir1>0 0 0</fdir1>
+              <slip1>0</slip1>
+              <slip2>0</slip2>
+            </ode>
+            <torsional>
+              <coefficient>1</coefficient>
+              <patch_radius>0</patch_radius>
+              <surface_radius>0</surface_radius>
+              <use_patch_radius>1</use_patch_radius>
+              <ode>
+                <slip>0</slip>
+              </ode>
+            </torsional>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0</restitution_coefficient>
+            <threshold>1e+06</threshold>
+          </bounce>
+          <contact>
+            <collide_without_contact>0</collide_without_contact>
+            <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+            <collide_bitmask>1</collide_bitmask>
+            <ode>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.2</soft_erp>
+              <kp>1e+13</kp>
+              <kd>1</kd>
+              <max_vel>0.01</max_vel>
+              <min_depth>0</min_depth>
+            </ode>
+            <bullet>
+              <split_impulse>1</split_impulse>
+              <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.2</soft_erp>
+              <kp>1e+13</kp>
+              <kd>1</kd>
+            </bullet>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+    <link name='paint_0'>
+      <pose>-6.667 40 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <link name='paint_1'>
+      <pose>-3.333 40 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <link name='paint_2'>
+      <pose>0 40 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <link name='paint_3'>
+      <pose>3.333 40 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <link name='paint_4'>
+      <pose>6.667 40 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <link name='paint_5'>
+      <pose>0 31.111 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <link name='paint_6'>
+      <pose>0 22.222 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <link name='paint_7'>
+      <pose>0 13.333 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <link name='paint_8'>
+      <pose>0 4.444 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <link name='paint_9'>
+      <pose>0 -4.444 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <link name='paint_10'>
+      <pose>0 -13.333 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <link name='paint_11'>
+      <pose>0 -22.222 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <link name='paint_12'>
+      <pose>0 -31.111 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <link name='paint_13'>
+      <pose>-6.667 -40 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <link name='paint_14'>
+      <pose>-3.333 -40 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <link name='paint_15'>
+      <pose>0 -40 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <link name='paint_16'>
+      <pose>3.333 -40 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <link name='paint_17'>
+      <pose>6.667 -40 -0.495 0 0 0</pose>
+      <gravity>0</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <lighting>1</lighting>
+          <script>
+            <uri>file://models/air_strip/materials/scripts</uri>
+            <uri>file://models/air_strip/materials/textures</uri>
+            <name>AirStrip/WhitePaint</name>
+          </script>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>0</cast_shadows>
+      </visual>
+    </link>
+    <joint name='tarmac_joint_0' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_0</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <joint name='tarmac_joint_1' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_1</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <joint name='tarmac_joint_2' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_2</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <joint name='tarmac_joint_3' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_3</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <joint name='tarmac_joint_4' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_4</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <joint name='tarmac_joint_5' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_5</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <joint name='tarmac_joint_6' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_6</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <joint name='tarmac_joint_7' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_7</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <joint name='tarmac_joint_8' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_8</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <joint name='tarmac_joint_9' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_9</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <joint name='tarmac_joint_10' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_10</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <joint name='tarmac_joint_11' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_11</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <joint name='tarmac_joint_12' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_12</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <joint name='tarmac_joint_13' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_13</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <joint name='tarmac_joint_14' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_14</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <joint name='tarmac_joint_15' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_15</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <joint name='tarmac_joint_16' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_16</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <joint name='tarmac_joint_17' type='fixed'>
+      <parent>tarmac</parent>
+      <child>paint_17</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+    <static>1</static>
+    <allow_auto_disable>1</allow_auto_disable>
+  </model>
+</sdf>

@@ -1,0 +1,16 @@
+<?xml version='1.0' ?>
+<launch>
+  <!-- Launch Bogey 0 system -->
+  <include file='$(find mbzirc_system)/launch/bogey0.launch'>
+    <arg name='fcu_url' value='udp://localhost:14540@localhost:14557' />
+  </include>
+  <!-- Launch views -->
+  <group ns='bogey0'>
+    <node name='perspective_camera' type='image_view' pkg='image_view'>
+      <remap from='image' to='camera/perspective/image_raw' />
+    </node>
+    <node name='fisheye_camera' type='image_view' pkg='image_view'>
+      <remap from='image' to='camera/fisheye/image_raw' />
+    </node>
+  </group>
+</launch>

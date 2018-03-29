@@ -1,0 +1,37 @@
+<?xml version='1.0' ?>
+<launch>
+  <arg name='physics' default='ode' />
+  <arg name='world' default='$(find mbzirc_gazebo)/worlds/kentland.world' />
+
+  <node name='gazebo' pkg='gazebo_ros' type='gzserver' respawn='false' output='screen' args='--verbose -e $(arg physics) $(arg world)' />
+  <node name='gazebo_gui' pkg='gazebo_ros' type='gzclient' respawn='false' output='screen' />
+
+  <!-- Launch Bogey 0 model -->
+  <include file='$(find mbzirc_gazebo)/launch/support/standard_bogey.launch'>
+    <arg name='id' value='0' />
+  </include>
+
+  <!-- Launch Bogey 1 model -->
+  <include file='$(find mbzirc_gazebo)/launch/support/standard_bogey.launch'>
+    <arg name='id' value='1' />
+    <arg name='x' value='3' />
+  </include>
+
+  <!-- Launch Bogey 2 model -->
+  <include file='$(find mbzirc_gazebo)/launch/support/standard_bogey.launch'>
+    <arg name='id' value='2' />
+    <arg name='x' value='-3' />
+  </include>
+
+  <!-- Launch Bogey 3 model -->
+  <include file='$(find mbzirc_gazebo)/launch/support/standard_bogey.launch'>
+    <arg name='id' value='3' />
+    <arg name='y' value='3' />
+  </include>
+
+  <!-- Launch Bogey 4 model -->
+  <include file='$(find mbzirc_gazebo)/launch/support/standard_bogey.launch'>
+    <arg name='id' value='4' />
+    <arg name='y' value='-3' />
+  </include>
+</launch>

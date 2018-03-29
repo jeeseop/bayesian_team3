@@ -1,0 +1,20 @@
+<?xml version='1.0' ?>
+<launch>
+  <arg name='id' />
+  <arg name='name' default='bogey$(arg id)' />
+  <arg name='x' default='0' />
+  <arg name='y' default='0' />
+  <arg name='z' default='0' />
+  <arg name='R' default='0' />
+  <arg name='P' default='0' />
+  <arg name='Y' default='0' />
+  <arg name='sdf' default='$(find mbzirc_gazebo)/models/bogey/model$(arg id).sdf' />
+  <arg name='rcS' default='$(find mbzirc_gazebo)/models/bogey/config/px4_parameters$(arg id)' />
+
+  <group ns='$(arg name)'>
+    <node name='px4' pkg='px4' type='px4' output='screen' args='$(find px4) $(arg rcS)' />
+    <node name='bogey_model' pkg='gazebo_ros' type='spawn_model' output='screen'
+      args='-sdf -file $(arg sdf) -model $(arg name) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)'>
+    </node>
+  </group>
+</launch>
