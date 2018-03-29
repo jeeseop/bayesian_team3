@@ -1,0 +1,9 @@
+<?xml version='1.0' ?>
+<launch>
+  <arg name='bodyname' default='balloon::link' />
+  <arg name='refname'  default='balloon::link' />
+
+ 
+<node pkg="rosservice" type="rosservice" name="global_loc" args="call --wait /gazebo/clear_body_wrenches $(arg bodyname)"/>
+
+</launch>
