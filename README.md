@@ -1,7 +1,7 @@
 # bayesian_team3
 
 
-#target specification
+# target specification
 
 * radius 0.5m sphere
 
@@ -11,19 +11,19 @@
 
 
 
-##start gazebo simulation environment
+## start gazebo simulation environment
 ```
 roslaunch mbzirc_gazebo challenge1_simulator_proj1.launch
 ```
 
-###start uav operating software
+### start uav operating software
 ```
 roslaunch mbzirc_gazebo challenge1_system_proj1.launch
 ```
 
 
 
-####manipulate target motion using wrench
+#### manipulate target motion using wrench
 * This command is appling force, thus you have to command reverse force if you want to move target back to the field of view
 * I will try to make the command more automatic
 * force value can change, and also it can move upward/downward
