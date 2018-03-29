@@ -5,9 +5,11 @@
 
 * radius 0.5m sphere
 
+* mass 1kg (use this info. for choosing the applied force)
+
 * Red color
 
-* starting pos. : 20m, 20m, 2m
+* starting pos. : 20m, 20m, 2m (you can manage these values in challenge1_simulator_proj1.launch)
 
 
 
@@ -26,7 +28,7 @@ roslaunch mbzirc_gazebo challenge1_system_proj1.launch
 ## manipulate target motion using wrench
 * This command is appling force, thus you have to command reverse force if you want to move target back to the field of view
 * I will try to make the command more automatic
-* force value can change, and also it can move upward/downward
+* force value can change, and also if you choose proper force, target will clime
 
 
 1. apply force
