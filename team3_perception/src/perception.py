@@ -87,7 +87,7 @@ class image_converter:
         print("FOV: "+str(fov))
         print("THETA: "+str(theta))
         distance = 0.5/tan(theta/2.0) # [m]
-        distance = distance * 0.1 # Arbitrary scaling factor
+        distance = distance * 0.04 # Arbitrary scaling factor
         print("DISTANCE: "+str(distance))
 
         output.point.x = pts[0]

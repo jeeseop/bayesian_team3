@@ -14,8 +14,8 @@
 
   <include file='$(find mbzirc_gazebo)/launch/support/sphere.launch'>
     <arg name='id' value='0' />
-    <arg name='x' value = '20' />
-    <arg name='y' value = '20' />
+    <arg name='x' value = '2' />
+    <arg name='y' value = '2' />
     <arg name='z' value = '2' />
   </include>
 </launch>
