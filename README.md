@@ -43,3 +43,18 @@ roslaunch mbzirc_gazebo balloonstop.launch
 
 
 
+## Perception
+
+Make sure you've launched the UAV in the air, so that it can see the red ball.
+
+
+You may also need to move it near the ball.
+
+
+*Note*: The Z estimate is very much an estimate, there's something I'm not understanding
+about the perspective math. I've applied a scaling factor which shouldn't be necessary to make the 
+numbers reasonable. Later I will update it.
+
+```
+rosrun team3_perception perception.py
+```
