@@ -11,7 +11,7 @@ from sensor_msgs.msg import Image,CameraInfo
 from geometry_msgs.msg import PointStamped
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
-from math import atan,tan
+from math import atan,tan,sqrt,sin,cos
 
 # http://wiki.ros.org/cv_bridge/Tutorials/ConvertingBetweenROSImagesAndOpenCVImagesPython
 
@@ -49,8 +49,14 @@ class image_converter:
     redish = cv2.morphologyEx(redish,cv2.MORPH_OPEN,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5)))
 
     im2,contours,hierarchy = cv2.findContours(redish, 1, 2)
+    #print(contours[0])
+    
     center = None
     try:
+        contours_undist = contours[0].reshape((1,-1,2)).astype(np.float32)
+        #print(contours_undist)
+        #contours_undist = cv2.fisheye.undistortPoints(contours_undist,self.cameraMat,np.zeros((4,)),None,None)
+        #print(contours_undist)
         cnt = contours[0]
         M = cv2.moments(cnt)
 
@@ -66,6 +72,9 @@ class image_converter:
     except IndexError:
         pass
     
+    frame[frame.shape[0]/2,:,:] = 255
+    frame[:,frame.shape[1]/2,:] = 255
+
     #cv2.imshow("HSV", colors)
     cv2.imshow("Image window", frame)
     cv2.imshow("Threshold", redish)
@@ -78,21 +87,27 @@ class image_converter:
     output.header.frame_id = "bogey0/fisheye_camera_optical_frame"
 
     if self.cameraMat is not None and center is not None:
-        pts = np.array([[[center[0],center[1]]]]).astype(np.float32)
-        print(pts.shape)
-        pts = cv2.undistortPoints(pts,self.cameraMat,self.distCoefs,None,None).squeeze()/1000 # [m]
-        print(pts)
-        fov = 2*atan(frame.shape[1]/(2*self.cameraMat[0,0]))
-        theta = radius/float(frame.shape[1])/fov
-        print("FOV: "+str(fov))
-        print("THETA: "+str(theta))
+        #pts = np.array([[[center[0],center[1]]]]).astype(np.float32)
+        #print(pts.shape)
+        #pts = cv2.fisheye.undistortPoints(pts,self.cameraMat,np.zeros((4,)),None,None).squeeze()/1000 # [m]
+        #print(pts)
+        fov_x = 2*atan(frame.shape[1]/(2*self.cameraMat[0,0]))
+        fov_y = fov_x*frame.shape[0]/frame.shape[1]
+        theta = radius/float(frame.shape[1])/fov_x
+        print("FOV: {},{}".format(fov_x,fov_y))
+        #print("THETA: "+str(theta))
         distance = 0.5/tan(theta/2.0) # [m]
-        distance = distance * 0.04 # Arbitrary scaling factor
+        distance = distance * 0.045 # Arbitrary scaling factor
         print("DISTANCE: "+str(distance))
 
-        output.point.x = pts[0]
-        output.point.y = pts[1]
-        output.point.z = distance
+        theta = (center[0]-self.cameraMat[0,2])/frame.shape[1]*fov_x
+        phi   = (center[1]-self.cameraMat[1,2])/frame.shape[0]*fov_y
+        print(theta,phi)
+        output.point.x = sin(theta)*distance
+        output.point.y = sin(phi)*distance
+        output.point.z = sqrt(distance*distance - output.point.x*output.point.x - output.point.y*output.point.y)
+
+        print(output.point)
 
         self.state_pub.publish(output)
 
