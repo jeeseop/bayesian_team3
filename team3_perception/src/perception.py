@@ -27,6 +27,11 @@ class image_converter:
     self.calib_sub = rospy.Subscriber("/bogey0/camera/fisheye/camera_info",CameraInfo,self.camInfo)
     self.state_pub = rospy.Publisher("/bogey0/ball_pose",PointStamped,queue_size=10)
     self.cameraMat = None
+    self.logger = open('datalog.csv','w')
+    self.logger.write("x,y,z\n")
+
+  def __del__(self):
+    self.logger.close()
 
   def camInfo(self,data):
     self.cameraMat = np.array(data.K).reshape((3,3))
@@ -93,11 +98,13 @@ class image_converter:
         #print(pts)
         fov_x = 2*atan(frame.shape[1]/(2*self.cameraMat[0,0]))
         fov_y = fov_x*frame.shape[0]/frame.shape[1]
-        theta = radius/float(frame.shape[1])/fov_x
+        #theta = radius/float(frame.shape[1])/fov_x
+        theta = 2*radius/frame.shape[0]*fov_y
+        theta = theta*1.17 # Arbitrary scaling factor
         print("FOV: {},{}".format(fov_x,fov_y))
-        #print("THETA: "+str(theta))
+        print("THETA: "+str(theta))
         distance = 0.5/tan(theta/2.0) # [m]
-        distance = distance * 0.045 # Arbitrary scaling factor
+        #distance = distance * 0.045 # Arbitrary scaling factor
         print("DISTANCE: "+str(distance))
 
         theta = (center[0]-self.cameraMat[0,2])/frame.shape[1]*fov_x
@@ -108,7 +115,7 @@ class image_converter:
         output.point.z = sqrt(distance*distance - output.point.x*output.point.x - output.point.y*output.point.y)
 
         print(output.point)
-
+        self.logger.write("{},{},{}\n".format(output.point.x,output.point.y,output.point.z))
         self.state_pub.publish(output)
 
     self.seq += 1
