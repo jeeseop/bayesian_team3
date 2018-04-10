@@ -27,24 +27,24 @@
   </gazebo>
 
   <!-- Joint between cube and balloon -->
-  <joint name="balloon_joint" type="prismatic">
-    <origin xyz="0 0 2.0" rpy="0 -1.57 0" /> 
+  <joint name="balloon_joint" type="floating">
+    <origin xyz="0 0 2.0" rpy="0 0 3.1416" /> 
     <parent link="base_link" /> 
     <child link="balloon_link"/>
-    <limit lower="-2" upper="10" effort="10" velocity="5"/>
-    <gravity>0</gravity>
+    <limit lower="0" upper="10" effort="10" velocity="5"/>
   </joint>
 
   <gazebo reference="balloon_joint"/>
 
   <!-- Balloon link --> 
   <link name="balloon_link">
+    <gravity>0</gravity> 
     <inertial>
       <mass value="0.01"/> 
       <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/> 
     </inertial> 
     <visual> 
-      <origin xyz="2 0 0" rpy="0 0 0" /> 
+      <origin xyz="0 0 2.0" rpy="0 0 0" /> 
       <geometry> 
         <sphere radius="0.25" /> 
       </geometry> 

@@ -5,11 +5,11 @@
 
 * radius 0.5m sphere
 
-* mass 1kg (use this info. for choosing the applied force)
+* mass 0.01kg (use this info. for choosing the applied force)
 
 * Red color
 
-* starting pos. : 20m, 20m, 2m (you can manage these values in challenge1_simulator_proj1.launch)
+* starting pos. : 2m, 2m, 2m (you can manage these values in challenge1_simulator_proj1.launch)
 
 
 
