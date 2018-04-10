@@ -1,7 +1,7 @@
 <?xml version='1.0' ?>
 <launch>
   <arg name='id' />
-  <arg name='name' default='balloon' />
+  <arg name='name' default='balloon$(arg id)' />
   <arg name='x' default='0' />
   <arg name='y' default='0' />
   <arg name='z' default='0' />
