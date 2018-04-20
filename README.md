@@ -3,42 +3,20 @@
 
 ## target specification
 
-* radius 0.5m sphere
-
-* mass 0.01kg (use this info. for choosing the applied force)
+* UAV with radius 0.25m sphere
 
 * Red color
-
-* starting pos. : 2m, 2m, 2m (you can manage these values in challenge1_simulator_proj1.launch)
 
 
 
 ## start gazebo simulation environment
 ```
-roslaunch mbzirc_gazebo challenge1_simulator_proj1.launch
+roslaunch mbzirc_gazebo challenge1_simulator_proj2.launch
 ```
 
 ## start uav operating software
 ```
-roslaunch mbzirc_gazebo challenge1_system_proj1.launch
-```
-
-
-
-## manipulate target motion using wrench
-* This command is appling force, thus you have to command reverse force if you want to move target back to the field of view
-* I will try to make the command more automatic
-* force value can change, and also if you choose proper force, target will clime
-
-
-1. apply force
-```
-rosservice call /gazebo/apply_body_wrench '{body_name: "balloon::link", reference_frame: "balloon::link", wrench: { force: { x: -0.5, y: -0.5, z: 0 } }, start_time: 0, duration: -1 }'
-```
-
-2. stop appling force
-```
-roslaunch mbzirc_gazebo balloonstop.launch
+roslaunch mbzirc_gazebo challenge1_system_proj2.launch
 ```
 
 
