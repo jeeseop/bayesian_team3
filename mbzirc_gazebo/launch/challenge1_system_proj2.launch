@@ -1,0 +1,14 @@
+<?xml version='1.0' ?>
+<launch>
+  <!-- Launch Bogey 0 system -->
+  <include file='$(find mbzirc_system)/launch/bogey0.launch'>
+    <arg name='fcu_url' value='udp://localhost:14540@localhost:14557' />
+  </include>
+
+  <!-- Launch Bogey 1 system -->
+  <include file='$(find mbzirc_system)/launch/bogey1.launch'>
+    <arg name='fcu_url' value='udp://localhost:14640@localhost:14657' />
+  </include>
+
+
+</launch>

@@ -149,6 +149,135 @@
       <velocity_decay/>
       <self_collide>0</self_collide>
     </link>
+
+
+
+  <joint name='base_joint1_joint' type='revolute'>
+    <parent>base_link</parent> 
+    <child>joint1_link</child>    
+    <pose>0 0 0 0 0 0</pose>
+    <axis>
+	<xyz>1 0 0</xyz>
+        <limit>
+          <lower>-1.57</lower>
+          <upper>1.57</upper>
+          <effort>10</effort>
+          <velocity>5</velocity>
+        </limit>
+    </axis>
+    <!--<gravity>0</gravity>-->
+  </joint>
+ <!--<gazebo reference='base_joint1_joint'/>-->
+
+
+  <link name='joint1_link'>
+      <inertial>
+        <!-- place holder -->
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.0001</mass>
+        <inertia>
+          <ixx>0.00001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00001</iyy>
+          <iyz>0</iyz>
+          <izz>0.00001</izz>
+        </inertia>
+      </inertial>
+ </link>
+ <!--<gazebo reference='joint1_link'/>-->
+
+
+ <joint name='joint1_joint2_joint' type='revolute'>
+    <parent>joint1_link</parent> 
+    <child>joint2_link</child>
+    <pose>0 0 0 0 0 0</pose>
+    <axis>
+	<xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1.57</lower>
+          <upper>1.57</upper>
+          <effort>10</effort>
+          <velocity>5</velocity>
+        </limit>
+    </axis>
+    <!--<gravity>0</gravity>-->
+  </joint>
+  <!--<gazebo reference='joint1_joint2_joint'/>-->
+
+
+  <link name='joint2_link'>
+      <inertial>
+        <!-- place holder -->
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.0001</mass>
+        <inertia>
+          <ixx>0.00001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00001</iyy>
+          <iyz>0</iyz>
+          <izz>0.00001</izz>
+        </inertia>
+      </inertial>
+ </link>
+ <!--<gazebo reference='joint2_link'/>-->
+
+
+<joint name='balloon_joint' type='revolute'>
+    <parent>joint2_link</parent> 
+    <child>balloon_link</child>
+    <pose>0 0 0 0 0 0</pose>
+    <axis>
+	<xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1.57</lower>
+          <upper>1.57</upper>
+          <effort>10</effort>
+          <velocity>5</velocity>
+        </limit>
+    </axis>
+    <!--<gravity>0</gravity>-->
+  </joint>
+  <!--<gazebo reference='balloon_joint'/>-->
+
+
+  <link name='balloon_link'>
+      <inertial>
+        <!-- place holder -->
+        <pose>0 0 -2 0 0 0</pose>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.001</iyy>
+          <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
+    <visual name='balloon_link_visual'> 
+      <pose>0 0 -2 0 0 0</pose> 
+      <geometry> 
+        <sphere>
+        	<radius>0.25</radius>
+        </sphere> 
+      </geometry> 
+      <material>
+       <script>
+        <name>Gazebo/Red</name> 
+       </script>
+      </material> 
+    </visual>
+    <!--<gravity>0</gravity>-->
+  </link>
+ <!--<gazebo reference='balloon_link'> 
+    <material>Gazebo/Red</material> 
+    <gravity>0</gravity> 
+  </gazebo>-->
+
+
+
     <link name='cgo3_mount_link'>
       <inertial>
         <!-- place holder -->
