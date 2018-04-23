@@ -30,9 +30,9 @@ while True:
 	
 	print x
 	
-	moving_z=random.uniform(1.0,5.0)
+	moving_x=random.uniform(1.0,5.0)
 	moving_y=random.uniform(1.0,5.0)
-	moving_x=random.uniform(2.5,8.0)
+	moving_z=random.uniform(2.5,8.0)
 
 	cmd2="rosservice call /bogey1/offboard_control/waypoint '{ position: { x: " + str(moving_x) + ", y: " + str(moving_y) + ", z: " + str(moving_z) + " }, yaw: 0.0 }'"
 	cmd2_value=subprocess.call(cmd2, shell=True)
