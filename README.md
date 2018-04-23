@@ -19,6 +19,15 @@ roslaunch mbzirc_gazebo challenge1_simulator_proj2.launch
 roslaunch mbzirc_gazebo challenge1_system_proj2.launch
 ```
 
+## move target uav randomly
+
+* movement length and cycle number can be changed in the python file
+
+* 5 is recommended for time gap value
+
+```
+cd ~/bayesian-robotics-ws/src/mbzirc_gazebo/ && ./uavmove.py
+```
 
 
 ## Perception
