@@ -164,6 +164,9 @@
           <effort>10</effort>
           <velocity>5</velocity>
         </limit>
+        <dynamics>
+          <damping>0.01</damping>
+	</dynamics>
     </axis>
     <!--<gravity>0</gravity>-->
   </joint>
@@ -199,7 +202,10 @@
           <upper>1.57</upper>
           <effort>10</effort>
           <velocity>5</velocity>
-        </limit>
+	  </limit>
+	  <dynamics>
+           <damping>0.01</damping>
+	  </dynamics>
     </axis>
     <!--<gravity>0</gravity>-->
   </joint>
@@ -236,6 +242,9 @@
           <effort>10</effort>
           <velocity>5</velocity>
         </limit>
+        <dynamics>
+          <damping>0.01</damping>
+	</dynamics>
     </axis>
     <!--<gravity>0</gravity>-->
   </joint>

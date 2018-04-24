@@ -196,7 +196,7 @@ target_link_libraries(
 #############
 ## Testing ##
 #############
-
+set( CMAKE_EXPORT_COMPILE_COMMANDS ON)
 ## Add gtest based cpp test target and link libraries
 # catkin_add_gtest(${PROJECT_NAME}-test test/test_mbzirc_gazebo.cpp)
 # if(TARGET ${PROJECT_NAME}-test)

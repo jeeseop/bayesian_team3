@@ -8,17 +8,15 @@ import random
 
 x=1
 cycle_num=10
-time_gap=5
+time_gap=2
 
 moving_z=5.0
 moving_y=5.0
 moving_x=5.0
 
-
 takeoff="rosservice call /bogey1/offboard_control/takeoff '{}'"
 takeoff_value=subprocess.call(takeoff, shell=True)
 time.sleep(5)
-
 
 
 cmd1="rosservice call /bogey1/offboard_control/waypoint '{ position: { x: 0.0, y: " + str(moving_y) + ", z: " + str(moving_z) + "}, yaw: 0.0 }'"
