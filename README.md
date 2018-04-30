@@ -34,6 +34,21 @@ cd ~/bayesian-robotics-ws/src/mbzirc_gazebo/ && ./uavmove.py
 ```
 
 
+## move target uav following eplipse trajectory
+
+* cycle number defines the total period number that uav will operate
+
+* time gap is fixed(recommended)
+
+* x_axis value is the square root of the major axis
+
+* y_axis value is the square root of the minor axis
+
+
+```
+cd ~/bayesian-robotics-ws/src/mbzirc_gazebo/ && ./uavmove2.py
+```
+
 ## Perception
 
 Make sure you've launched the UAV in the air, so that it can see the red ball.
