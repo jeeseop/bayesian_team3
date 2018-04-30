@@ -44,7 +44,9 @@ cd ~/bayesian-robotics-ws/src/mbzirc_gazebo/ && ./uavmove.py
 
 * y_axis value is the square root of the minor axis
 
+* height of the target UAV is 5.0
 
+* when you run the uavmove2.py, the observing UAV will also move to 10.0 automatically
 ```
 cd ~/bayesian-robotics-ws/src/mbzirc_gazebo/ && ./uavmove2.py
 ```
