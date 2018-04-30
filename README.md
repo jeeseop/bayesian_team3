@@ -34,7 +34,7 @@ cd ~/bayesian-robotics-ws/src/mbzirc_gazebo/ && ./uavmove.py
 ```
 
 
-## move target uav following eplipse trajectory
+## move target uav following ellipse trajectory
 
 * cycle number defines the total period number that uav will operate
 
