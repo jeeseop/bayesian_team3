@@ -5,7 +5,7 @@
   <arg name='x' default='0' />
   <arg name='y' default='0' />
   <arg name='z' default='0' />
-  <arg name='sdf' default='$(find mbzirc_gazebo)/models/unit_sphere_0/balloon_rpy.sdf' />
+  <arg name='sdf' default='$(find mbzirc_gazebo)/models/unit_sphere_0/balloon.sdf' />
 
   <group ns='$(arg name)'>
     <node name='balloon' pkg='gazebo_ros' type='spawn_model' output='screen'

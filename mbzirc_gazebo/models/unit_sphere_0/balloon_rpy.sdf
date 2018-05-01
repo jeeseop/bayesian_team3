@@ -106,12 +106,12 @@
       <mass value="0.01"/> 
       <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/> 
     </inertial> 
-    <visual> 
-      <origin xyz="0 0 2" rpy="0 0 0" /> 
+    <visual name="balloon_link_visual"> 
+      <pose> 0 0 2 0 0 0</pose>
       <geometry> 
         <sphere radius="0.25" /> 
       </geometry> 
-      <material name="red" /> 
+      <material name="Blue"/>
     </visual>
     <gravity>0</gravity>
     <collision> 
@@ -123,7 +123,7 @@
   </link>
 
  <gazebo reference="balloon_link"> 
-    <material>Gazebo/Red</material> 
+    <material>Gazebo/Blue</material> 
     <gravity>1</gravity> 
   </gazebo>
 

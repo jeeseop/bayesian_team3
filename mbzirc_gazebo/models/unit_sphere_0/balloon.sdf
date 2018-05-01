@@ -49,7 +49,7 @@
       <geometry> 
         <sphere radius="0.25" /> 
       </geometry> 
-      <material name="red" /> 
+      <material name="white"/>
     </visual>
     <gravity>0</gravity>
     <collision> 
@@ -61,7 +61,7 @@
   </link>
 
  <gazebo reference="balloon_link"> 
-    <material>Gazebo/Red</material> 
+    <material>Gazebo/Blue</material> 
     <gravity>0</gravity> 
   </gazebo>
 

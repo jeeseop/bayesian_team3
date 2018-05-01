@@ -11,7 +11,7 @@
 
 ## start gazebo simulation environment
 ```
-roslaunch mbzirc_gazebo challenge1_simulator_proj2.launch
+roslaunch mbzirc_gazebo challenge1_simulator_proj2_forpic.launch
 ```
 
 ## start uav operating software
