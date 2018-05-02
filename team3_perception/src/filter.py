@@ -9,7 +9,52 @@ from std_msgs.msg import String
 from geometry_msgs.msg import PointStamped
 from gazebo_msgs.msg import LinkStates
 import numpy as np
+import numpy
 from math import atan,tan,sqrt,sin,cos
+import math
+
+_EPS = 0.00001
+
+def quaternion_matrix(quaternion):
+    """Return homogeneous rotation matrix from quaternion.
+
+    >>> M = quaternion_matrix([0.99810947, 0.06146124, 0, 0])
+    >>> numpy.allclose(M, rotation_matrix(0.123, [1, 0, 0]))
+    True
+    >>> M = quaternion_matrix([1, 0, 0, 0])
+    >>> numpy.allclose(M, numpy.identity(4))
+    True
+    >>> M = quaternion_matrix([0, 1, 0, 0])
+    >>> numpy.allclose(M, numpy.diag([1, -1, -1, 1]))
+    True
+
+    """
+    q = numpy.array(quaternion, dtype=numpy.float64, copy=True)
+    n = numpy.dot(q, q)
+    if n < _EPS:
+        return numpy.identity(4)
+    q *= math.sqrt(2.0 / n)
+    q = numpy.outer(q, q)
+    return numpy.array([
+        [1.0-q[2, 2]-q[3, 3],     q[1, 2]-q[3, 0],     q[1, 3]+q[2, 0], 0.0],
+        [    q[1, 2]+q[3, 0], 1.0-q[1, 1]-q[3, 3],     q[2, 3]-q[1, 0], 0.0],
+        [    q[1, 3]-q[2, 0],     q[2, 3]+q[1, 0], 1.0-q[1, 1]-q[2, 2], 0.0],
+        [                0.0,                 0.0,                 0.0, 1.0]])
+
+
+def quaternion_inverse(quaternion):
+    """Return inverse of quaternion.
+
+    >>> q0 = random_quaternion()
+    >>> q1 = quaternion_inverse(q0)
+    >>> numpy.allclose(quaternion_multiply(q0, q1), [1, 0, 0, 0])
+    True
+
+    """
+    q = numpy.array(quaternion, dtype=numpy.float64, copy=True)
+    numpy.negative(q[1:], q[1:])
+    return q / numpy.dot(q, q)
+
 
 class kalman_estimator:
 
@@ -37,8 +82,10 @@ class kalman_estimator:
     #print(data.pose[balloon_idx].position)
     cam_idx = data.name.index('bogey0::fisheye_camera')
     #print(cam_idx)
-    self.local_pos = data.pose[cam_idx].position
-    self.balloon_pos = data.pose[balloon_idx].position
+    self.local_pos = data.pose[cam_idx]
+    self.balloon_pos = data.pose[balloon_idx]
+    
+    self.balloon_pos.position.z -= 2 # Rope Length
 
   def kalmanUpdate(self, raw_state):
     A = np.array([[ 0,1, 0,0],
@@ -89,17 +136,66 @@ class kalman_estimator:
     
     if self.local_pos is not None:  
     
-      est_global_pos = np.array([-yhat_sq[0],-yhat_sq[1],-raw_state.point.z])
+      balloon_meas = np.array([[yhat_sq[0]],[yhat_sq[1]],[raw_state.point.z],[1]])
+      
+      print("\n\n KALMAN BALLOON DATA \n\n")
+      
+      print(balloon_meas)
+      
+      local_bogey_quat = np.array([self.local_pos.orientation.w,self.local_pos.orientation.x,self.local_pos.orientation.y,self.local_pos.orientation.z])
+      
+      print(local_bogey_quat)
+      
+      bogey_rotmat = quaternion_matrix((local_bogey_quat)) # quaternion_inverse
+      
+      print(bogey_rotmat)
+    
+      est_global_pos = bogey_rotmat.dot(balloon_meas)
+      
+      #est_global_pos = est_global_pos[:3,:]
+      #est_global_pos = np.array([[-est_global_pos[1,0]],
+      #                           [est_global_pos[2,0]],
+      #                           [est_global_pos[0,0]]])
+      
+      est_global_pos = np.array([[yhat_sq[1]],
+                                 [yhat_sq[0]],
+                                 [-raw_state.point.z]])
+      
+      est_raw_pos = np.array([[ raw_state.point.y],
+                              [ raw_state.point.x],
+                              [-raw_state.point.z]])
+      
+      print("\n\nWORLD ALIGNED MEASUREMENT\n\n")
+      
+      print(est_global_pos)
       
       est_global_pos = est_global_pos + \
-                       np.array([self.local_pos.x,
-                                 self.local_pos.y,
-                                 self.local_pos.z])
+                       np.array([[self.local_pos.position.x],
+                                 [self.local_pos.position.y],
+                                 [self.local_pos.position.z]])
+                                 
+      est_raw_pos = est_raw_pos + \
+                    np.array([[self.local_pos.position.x],
+                              [self.local_pos.position.y],
+                              [self.local_pos.position.z]])
           
-      print("EST GLOBAL POS: \n\n")             
+      print("\n\nBOGEY0 POS:\n\n")
+      print(self.local_pos.position)
+      print("\n\nEST GLOBAL BALLOON POS: \n\n")             
       print(est_global_pos)
-      print("\n\nREAL GLOBAL POS: \n\n")
-      print(self.balloon_pos)
+      print("\n\nREAL GLOBAL BALLOON POS: \n\n")
+      print(self.balloon_pos.position)
+    
+      mse_raw = np.linalg.norm(est_raw_pos - np.array([[self.local_pos.position.x],
+                              [self.local_pos.position.y],
+                              [self.local_pos.position.z]]))
+    
+      mse_kal = np.linalg.norm(est_global_pos - np.array([[self.local_pos.position.x],
+                              [self.local_pos.position.y],
+                              [self.local_pos.position.z]]))
+    
+      print("\n\nERROR_RAW: {}".format(mse_raw))
+      print("ERROR_KALMAN: {}\n\n".format(mse_kal))
     
       self.logger.write("{},{},{}\n".format(xhat_sq[0],xhat_sq[1],xhat_sq[2]))
     
