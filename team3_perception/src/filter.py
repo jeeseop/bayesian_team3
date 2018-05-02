@@ -7,6 +7,7 @@ import sys
 import rospy
 from std_msgs.msg import String
 from geometry_msgs.msg import PointStamped
+from gazebo_msgs.msg import LinkStates
 import numpy as np
 from math import atan,tan,sqrt,sin,cos
 
@@ -17,20 +18,33 @@ class kalman_estimator:
     #self.image_sub = rospy.Subscriber("/bogey0/camera/fisheye/image_raw",Image,self.callback)
     #self.calib_sub = rospy.Subscriber("/bogey0/camera/fisheye/camera_info",CameraInfo,self.camInfo)
     self.state_sub = rospy.Subscriber("/bogey0/ball_pose",PointStamped,self.kalmanUpdate)
+    self.posit_sub = rospy.Subscriber("/gazebo/link_states",LinkStates,self.callback_pos)
     self.new_state_pub = rospy.Publisher("/bogey0/clean_ball_pose",PointStamped,queue_size=10)
     self.logger = open('datalog_filter.csv','w')
     self.logger.write("x,y,z\n")
     self.xhat_old = np.array([[0],[0],[0],[0]])
     self.P_old = np.ones((4,4))
+    self.local_pos = None
+    self.balloon_pos = None
 
   def __del__(self):
     self.logger.close()
+    
+  def callback_pos(self,data):
+    #print(data.name)
+    balloon_idx = data.name.index('bogey1::balloon_link')
+    #print(balloon_idx)
+    #print(data.pose[balloon_idx].position)
+    cam_idx = data.name.index('bogey0::fisheye_camera')
+    #print(cam_idx)
+    self.local_pos = data.pose[cam_idx].position
+    self.balloon_pos = data.pose[balloon_idx].position
 
   def kalmanUpdate(self, raw_state):
     A = np.array([[ 0,1, 0,0],
-                  [-1,0, 0,0],
+                  [-2*np.pi/3,0, 0,0],
                   [ 0,0, 0,1],
-                  [ 0,0,-1,0]])
+                  [ 0,0,-2*np.pi/3,0]])
 
     C = np.array([[1,0,0,0],
                   [0,0,1,0]])
@@ -61,6 +75,8 @@ class kalman_estimator:
 
     yhat = C.dot(xhat)
     
+    yhat_sq = yhat.squeeze()
+    
     print(measurement)
     print("\n")
     print(yhat)
@@ -71,9 +87,21 @@ class kalman_estimator:
     
     xhat_sq = xhat.squeeze()
     
-
+    if self.local_pos is not None:  
     
-    self.logger.write("{},{},{}\n".format(xhat_sq[0],xhat_sq[1],xhat_sq[2]))
+      est_global_pos = np.array([-yhat_sq[0],-yhat_sq[1],-raw_state.point.z])
+      
+      est_global_pos = est_global_pos + \
+                       np.array([self.local_pos.x,
+                                 self.local_pos.y,
+                                 self.local_pos.z])
+          
+      print("EST GLOBAL POS: \n\n")             
+      print(est_global_pos)
+      print("\n\nREAL GLOBAL POS: \n\n")
+      print(self.balloon_pos)
+    
+      self.logger.write("{},{},{}\n".format(xhat_sq[0],xhat_sq[1],xhat_sq[2]))
     
     output = PointStamped()
 
