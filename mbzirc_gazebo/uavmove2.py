@@ -13,7 +13,7 @@ time_gap=0.1
 period=3
 
 x_axis=4
-y_axis=6
+y_axis=3
 
 moving_z=5.0
 moving_y=0.0
@@ -25,7 +25,7 @@ takeoff_value=subprocess.call(takeoff0, shell=True)
 time.sleep(5)
 
 
-cmd0="rosservice call /bogey0/offboard_control/waypoint '{ position: { x: 0.0, y: 0.0, z: 10.0}, yaw: 0.0 }'"
+cmd0="rosservice call /bogey0/offboard_control/waypoint '{ position: { x: 0.0, y: 0.0, z: 7.0}, yaw: 0.0 }'"
 cmd1_value=subprocess.call(cmd0, shell=True)
 time.sleep(5)
 

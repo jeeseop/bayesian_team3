@@ -66,7 +66,7 @@ class kalman_estimator:
     self.posit_sub = rospy.Subscriber("/gazebo/link_states",LinkStates,self.callback_pos)
     self.new_state_pub = rospy.Publisher("/bogey0/clean_ball_pose",PointStamped,queue_size=10)
     self.logger = open('datalog_filter.csv','w')
-    self.logger.write("x,y,z\n")
+    self.logger.write("raw,cal\n")
     self.xhat_old = np.array([[0],[0],[0],[0]])
     self.P_old = np.ones((4,4))
     self.local_pos = None
@@ -85,13 +85,15 @@ class kalman_estimator:
     self.local_pos = data.pose[cam_idx]
     self.balloon_pos = data.pose[balloon_idx]
     
-    self.balloon_pos.position.z -= 2 # Rope Length
+    #self.balloon_pos.position.z -= 2 # Rope Length #simulation fixed
 
   def kalmanUpdate(self, raw_state):
     A = np.array([[ 0,1, 0,0],
                   [-2*np.pi/3,0, 0,0],
                   [ 0,0, 0,1],
                   [ 0,0,-2*np.pi/3,0]])
+
+    A= A + np.identity(4)
 
     C = np.array([[1,0,0,0],
                   [0,0,1,0]])
@@ -100,10 +102,10 @@ class kalman_estimator:
     Q = np.array([[0.02,0.02,   0,   0],
                   [0.02,0.02,   0,   0],
                   [   0,   0,0.02,0.02],
-                  [   0,   0,0.02,0.02]])
+                  [   0,   0,0.02,0.02]]) #motion model covariance
                   
     R = np.array([[ 0.01, 0.001],
-                  [0.001,  0.01]])
+                  [0.001,  0.01]]) #sensor model covariance
     
     # PREDICTION ##############################################################
     xhat_k_km1 = A.dot(self.xhat_old) # Ignoring B term
@@ -112,9 +114,12 @@ class kalman_estimator:
     # CORRECTION ##############################################################
     
     # Z values are thrown out
-    measurement = np.array([[raw_state.point.x],
-                            [raw_state.point.y]])
+    #measurement = np.array([[raw_state.point.x],
+    #                        [raw_state.point.y]])
     
+    measurement = np.array([[raw_state.point.y],
+                            [raw_state.point.x]])
+
     K = P_k_km1.dot(C.T).dot(np.linalg.inv(C.dot(P_k_km1).dot(C.T) + R))
     
     xhat = xhat_k_km1 + K.dot(measurement - C.dot(xhat_k_km1))
@@ -124,13 +129,13 @@ class kalman_estimator:
     
     yhat_sq = yhat.squeeze()
     
-    print(measurement)
-    print("\n")
-    print(yhat)
-    print("\n")
-    print(xhat)
-    print("\n")
-    print(P)
+    #print(measurement)
+    #print("\n")
+    #print(yhat)
+    #print("\n")
+    #print(xhat)
+    #print("\n")
+    #print(P)
     
     xhat_sq = xhat.squeeze()
     
@@ -144,11 +149,11 @@ class kalman_estimator:
       
       local_bogey_quat = np.array([self.local_pos.orientation.w,self.local_pos.orientation.x,self.local_pos.orientation.y,self.local_pos.orientation.z])
       
-      print(local_bogey_quat)
+      #print(local_bogey_quat)
       
       bogey_rotmat = quaternion_matrix((local_bogey_quat)) # quaternion_inverse
       
-      print(bogey_rotmat)
+      #print(bogey_rotmat)
     
       est_global_pos = bogey_rotmat.dot(balloon_meas)
       
@@ -157,13 +162,13 @@ class kalman_estimator:
       #                           [est_global_pos[2,0]],
       #                           [est_global_pos[0,0]]])
       
-      est_global_pos = np.array([[yhat_sq[1]],
-                                 [yhat_sq[0]],
-                                 [-raw_state.point.z]])
+      est_global_pos = np.array([[yhat_sq[0]],
+                                 [yhat_sq[1]],
+                                 [-raw_state.point.z]])#kalman filtered
       
       est_raw_pos = np.array([[ raw_state.point.y],
                               [ raw_state.point.x],
-                              [-raw_state.point.z]])
+                              [-raw_state.point.z]])#only perception
       
       print("\n\nWORLD ALIGNED MEASUREMENT\n\n")
       
@@ -181,23 +186,25 @@ class kalman_estimator:
           
       print("\n\nBOGEY0 POS:\n\n")
       print(self.local_pos.position)
+      print("\n\nPERCEPTED BALLOON POS:\n\n")
+      print(measurement)
       print("\n\nEST GLOBAL BALLOON POS: \n\n")             
       print(est_global_pos)
       print("\n\nREAL GLOBAL BALLOON POS: \n\n")
       print(self.balloon_pos.position)
     
-      mse_raw = np.linalg.norm(est_raw_pos - np.array([[self.local_pos.position.x],
-                              [self.local_pos.position.y],
-                              [self.local_pos.position.z]]))
+      mse_raw = np.linalg.norm(est_raw_pos - np.array([[self.balloon_pos.position.x],
+                              [self.balloon_pos.position.y],
+                              [self.balloon_pos.position.z]]))
     
-      mse_kal = np.linalg.norm(est_global_pos - np.array([[self.local_pos.position.x],
-                              [self.local_pos.position.y],
-                              [self.local_pos.position.z]]))
+      mse_kal = np.linalg.norm(est_global_pos - np.array([[self.balloon_pos.position.x],
+                              [self.balloon_pos.position.y],
+                              [self.balloon_pos.position.z]]))
     
       print("\n\nERROR_RAW: {}".format(mse_raw))
       print("ERROR_KALMAN: {}\n\n".format(mse_kal))
     
-      self.logger.write("{},{},{}\n".format(xhat_sq[0],xhat_sq[1],xhat_sq[2]))
+      self.logger.write("{},{}\n".format(mse_raw,mse_kal))
     
     output = PointStamped()
 
