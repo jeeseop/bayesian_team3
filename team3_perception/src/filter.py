@@ -66,7 +66,7 @@ class kalman_estimator:
     self.posit_sub = rospy.Subscriber("/gazebo/link_states",LinkStates,self.callback_pos)
     self.new_state_pub = rospy.Publisher("/bogey0/clean_ball_pose",PointStamped,queue_size=10)
     self.logger = open('datalog_filter.csv','w')
-    self.logger.write("raw,cal\n")
+    self.logger.write("perc_error,kal_error,gt_bal_x,gt_bal_y,gt_bal_z,perc_bal_x,perc_bal_y,perc_bal_z,kal_bal_x,kal_bal_y,kal_bal_z\n")
     self.xhat_old = np.array([[0],[0],[0],[0]])
     self.P_old = np.ones((4,4))
     self.local_pos = None
@@ -204,7 +204,11 @@ class kalman_estimator:
       print("\n\nERROR_RAW: {}".format(mse_raw))
       print("ERROR_KALMAN: {}\n\n".format(mse_kal))
     
-      self.logger.write("{},{}\n".format(mse_raw,mse_kal))
+      self.logger.write("{},{},{},{},{},{},{},{},{},{},{}\n".format(
+                        mse_raw,mse_kal,
+			                  self.balloon_pos.position.x,self.balloon_pos.position.y,self.balloon_pos.position.z,
+                        est_raw_pos[0,0],est_raw_pos[1,0],est_raw_pos[2,0],
+                        est_global_pos[0,0],est_global_pos[1,0],est_global_pos[2,0]))
     
     output = PointStamped()
 
