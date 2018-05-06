@@ -9,6 +9,7 @@ import cv2
 from std_msgs.msg import String
 from sensor_msgs.msg import Image,CameraInfo
 from geometry_msgs.msg import PointStamped
+from gazebo_msgs.msg import LinkStates
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
 from math import atan,tan,sqrt,sin,cos
@@ -26,12 +27,28 @@ class image_converter:
     self.image_sub = rospy.Subscriber("/bogey0/camera/fisheye/image_raw",Image,self.callback)
     self.calib_sub = rospy.Subscriber("/bogey0/camera/fisheye/camera_info",CameraInfo,self.camInfo)
     self.state_pub = rospy.Publisher("/bogey0/ball_pose",PointStamped,queue_size=10)
+    self.posit_sub = rospy.Subscriber("/gazebo/link_states",LinkStates,self.callback_pos)
     self.cameraMat = None
     self.logger = open('datalog.csv','w')
     self.logger.write("x,y,z\n")
+    
+    self.balloon_pose = None
+    self.local_pose = None
 
   def __del__(self):
     self.logger.close()
+
+  def callback_pos(self,data):
+    #print(data.name)
+    balloon_idx = data.name.index('bogey1::balloon_link')
+    #print(balloon_idx)
+    #print(data.pose[balloon_idx].position)
+    cam_idx = data.name.index('bogey0::fisheye_camera')
+    #print(cam_idx)
+    self.local_pos = data.pose[cam_idx]
+    self.balloon_pos = data.pose[balloon_idx]
+    
+    #self.balloon_pos.position.z -= 2 # Rope Length #simulation fixed
 
   def camInfo(self,data):
     self.cameraMat = np.array(data.K).reshape((3,3))
@@ -100,10 +117,10 @@ class image_converter:
         fov_y = fov_x*frame.shape[0]/frame.shape[1]
         #theta = radius/float(frame.shape[1])/fov_x
         theta = 2*radius/frame.shape[0]*fov_y
-        theta = theta*1.17 # Arbitrary scaling factor
+        theta = theta*1.68 # Arbitrary scaling factor
         print("FOV: {},{}".format(fov_x,fov_y))
         print("THETA: "+str(theta))
-        distance = 0.5/tan(theta/2.0) # [m]
+        distance = 0.25/tan(theta/2.0) # [m]
         #distance = distance * 0.045 # Arbitrary scaling factor
         print("DISTANCE: "+str(distance))
 
@@ -115,6 +132,13 @@ class image_converter:
         output.point.z = sqrt(distance*distance - output.point.x*output.point.x - output.point.y*output.point.y)
 
         print(output.point)
+
+        if self.balloon_pos is not None:
+          x = self.balloon_pos.position.x - self.local_pos.position.x
+          y = self.balloon_pos.position.y - self.local_pos.position.y
+          z = self.balloon_pos.position.z - self.local_pos.position.z
+          real_dist = sqrt(x*x+y*y+z*z)
+          print("REAL DIST: {}".format(real_dist))
         self.logger.write("{},{},{}\n".format(output.point.x,output.point.y,output.point.z))
         self.state_pub.publish(output)
 
