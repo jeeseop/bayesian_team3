@@ -117,10 +117,10 @@ class image_converter:
         fov_y = fov_x*frame.shape[0]/frame.shape[1]
         #theta = radius/float(frame.shape[1])/fov_x
         theta = 2*radius/frame.shape[0]*fov_y
-        theta = theta*1.68 # Arbitrary scaling factor
+        theta = theta*1.17 # Arbitrary scaling factor
         print("FOV: {},{}".format(fov_x,fov_y))
         print("THETA: "+str(theta))
-        distance = 0.25/tan(theta/2.0) # [m]
+        distance = 0.5/tan(theta/2.0) # [m]
         #distance = distance * 0.045 # Arbitrary scaling factor
         print("DISTANCE: "+str(distance))
 
