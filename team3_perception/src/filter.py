@@ -12,6 +12,7 @@ import numpy as np
 import numpy
 from math import atan,tan,sqrt,sin,cos
 import math
+import cv2
 
 _EPS = 0.00001
 
@@ -66,11 +67,15 @@ class kalman_estimator:
     self.posit_sub = rospy.Subscriber("/gazebo/link_states",LinkStates,self.callback_pos)
     self.new_state_pub = rospy.Publisher("/bogey0/clean_ball_pose",PointStamped,queue_size=10)
     self.logger = open('datalog_filter.csv','w')
-    self.logger.write("perc_error,kal_error,gt_bal_x,gt_bal_y,gt_bal_z,perc_bal_x,perc_bal_y,perc_bal_z,kal_bal_x,kal_bal_y,kal_bal_z\n")
+    self.logger.write("perc_error,kal_error,gt_bal_x,gt_bal_y,gt_bal_z,perc_bal_x,perc_bal_y,perc_bal_z,kal_bal_x,kal_bal_y,kal_bal_z,perc_raw_x,perc_raw_y,perc_raw_z\n")
     self.xhat_old = np.array([[0],[0],[0],[0]])
     self.P_old = np.ones((4,4))
     self.local_pos = None
     self.balloon_pos = None
+    self.vis = np.zeros((400,400,3)).astype(np.uint8)
+    self.old_gt_point = None
+    self.old_perc_point = None
+    self.old_kal_point = None
 
   def __del__(self):
     self.logger.close()
@@ -92,8 +97,11 @@ class kalman_estimator:
                   [-2*np.pi/3,0, 0,0],
                   [ 0,0, 0,1],
                   [ 0,0,-2*np.pi/3,0]])
-
-    A= A + np.identity(4)
+    A = np.array([[ 0,1, 0,0],
+                  [ 2*np.pi/3,0, 0,0],
+                  [ 0,0, 0,1],
+                  [ 0,0, 2*np.pi/3,0]])    
+    #A= A + np.identity(4)
 
     C = np.array([[1,0,0,0],
                   [0,0,1,0]])
@@ -104,8 +112,8 @@ class kalman_estimator:
                   [   0,   0,0.02,0.02],
                   [   0,   0,0.02,0.02]]) #motion model covariance
                   
-    R = np.array([[ 0.01, 0.001],
-                  [0.001,  0.01]]) #sensor model covariance
+    R = np.array([[0.05, 0.0  ],
+                  [0.0  ,0.05]]) #sensor model covariance
     
     # PREDICTION ##############################################################
     xhat_k_km1 = A.dot(self.xhat_old) # Ignoring B term
@@ -204,11 +212,33 @@ class kalman_estimator:
       print("\n\nERROR_RAW: {}".format(mse_raw))
       print("ERROR_KALMAN: {}\n\n".format(mse_kal))
     
-      self.logger.write("{},{},{},{},{},{},{},{},{},{},{}\n".format(
+      self.logger.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
                         mse_raw,mse_kal,
 			                  self.balloon_pos.position.x,self.balloon_pos.position.y,self.balloon_pos.position.z,
                         est_raw_pos[0,0],est_raw_pos[1,0],est_raw_pos[2,0],
-                        est_global_pos[0,0],est_global_pos[1,0],est_global_pos[2,0]))
+                        est_global_pos[0,0],est_global_pos[1,0],est_global_pos[2,0],
+                        raw_state.point.x,raw_state.point.y,raw_state.point.z))
+    
+
+      
+      gt_point = (int(self.balloon_pos.position.x*50)+200,int(self.balloon_pos.position.y*50+200))
+      perc_point = (int(est_raw_pos[0,0]*50+200),int(est_raw_pos[1,0]*50+200))
+      kal_point = (int(est_global_pos[0,0]*50+200),int(est_global_pos[1,0]*50+200))
+      
+      if self.old_gt_point:
+        #print(gt_point)
+        cv2.line(self.vis,gt_point,self.old_gt_point,(255,0,0),2)
+        cv2.line(self.vis,perc_point,self.old_perc_point,(0,255,0),2)
+        cv2.line(self.vis,kal_point,self.old_kal_point,(0,0,255),2)
+      
+      cv2.imshow('Visualization',self.vis)
+      k = cv2.waitKey(1)
+      if k == 27:
+          quit()
+          
+      self.old_gt_point = gt_point
+      self.old_perc_point = perc_point
+      self.old_kal_point = kal_point
     
     output = PointStamped()
 
